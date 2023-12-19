@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/search_icon"
+            android:id="@+id/navCall"
+            android:title="@string/sideMenu_charge"/>
+
+        <item
+            android:icon="@drawable/search_icon"
+            android:id="@+id/navFriend"
+            android:title="@string/sideMenu_charge"/>
+
+        <item
+            android:icon="@drawable/search_icon"
+            android:id="@+id/navLocation"
+            android:title="@string/sideMenu_charge"/>
+
+        <item
+            android:icon="@drawable/search_icon"
+            android:id="@+id/navMall"
+            android:title="@string/sideMenu_charge"/>
+
+        <item
+            android:icon="@drawable/search_icon"
+            android:id="@+id/navTask"
+            android:title="@string/sideMenu_charge"/>
+
+    </group>
+</menu>

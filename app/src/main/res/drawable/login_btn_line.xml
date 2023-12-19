@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid
+        android:color="@color/CommonColor_White"/>
+    <corners
+        android:radius="@dimen/circle_common_radius"/>
+    <padding
+        android:left="@dimen/login_circle_padding"
+        android:top="@dimen/login_circle_padding"
+        android:right="@dimen/login_circle_padding"
+        android:bottom="@dimen/login_circle_padding"/>
+</shape>

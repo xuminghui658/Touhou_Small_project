@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<!--        <item-->
+<!--            android:id="@+id/search_menu"-->
+<!--            android:icon="@drawable/search_icon"-->
+<!--            android:title="@string/search_main"-->
+<!--            app:actionViewClass="androidx.appcompat.widget.SearchView"-->
+<!--            app:searchIcon = "@drawable/search_icon"-->
+<!--            app:showAsAction="ifRoom"/>-->
+    <item
+        android:id="@+id/more_menu"
+        android:icon="@drawable/more_icon"
+        android:title="@string/more_menu"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/item_scan"
+                android:title="@string/scan_menu"/>
+            <item
+                android:id="@+id/item_msg"
+                android:title="@string/msg_menu"/>
+        </menu>
+    </item>
+</menu>

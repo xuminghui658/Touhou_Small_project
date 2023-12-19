@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/ThemeColor_Pink"
+    android:padding="10sp"
+    android:layout_width="match_parent"
+    android:layout_height="160dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circle_icon_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+        android:textSize="@dimen/text_size_medium"
+        android:textColor="@color/CommonColor_White"
+        android:id="@+id/mail_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/email_address"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/circle_icon_image"/>
+
+    <TextView
+        android:textSize="@dimen/text_size_medium"
+        android:textColor="@color/CommonColor_White"
+        android:id="@+id/name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/login_name"
+        android:layout_above="@+id/mail_text"
+        android:layout_toEndOf="@+id/circle_icon_image"/>
+</RelativeLayout>

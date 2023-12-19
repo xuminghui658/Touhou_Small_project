@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="circle_common_radius">35dp</dimen>
+    <dimen name="login_circle_padding">10dp</dimen>
+    <dimen name="login_crop_cancel_btn_left">5dp</dimen>
+    <dimen name="login_crop_cancel_btn_right">35dp</dimen>
+
+    <dimen name="mainView_viewPager_margin_bottom">80dp</dimen>
+
+    <dimen name="text_size_medium">15sp</dimen>
+
+    <dimen name="search_view_length">750dp</dimen>
+    <dimen name="search_view_padding">10dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

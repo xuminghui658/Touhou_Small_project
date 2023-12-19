@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".View.Activities.SearchActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/search_view_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        style="@style/Toolbar.MyStyle"
+        android:background="@color/ThemeColor_Pink"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        app:popupTheme="@style/OverflowMenuStyle"
+        app:titleTextAppearance="@style/Toolbar.TitleText">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/search_view_padding"
+            android:paddingBottom="@dimen/search_view_padding">
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:background="@drawable/searchview_line"
+            android:maxWidth="@dimen/search_view_length"
+            app:iconifiedByDefault="false"
+            app:closeIcon="@drawable/cancel_icon"
+            app:queryHint="@string/search_something"
+            app:theme="@style/AppSearchView"
+            app:searchIcon="@drawable/search_icon"
+            app:showAsAction="ifRoom">
+        </androidx.appcompat.widget.SearchView>
+
+        <Button
+            android:id="@+id/search_btn_toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/ThemeColor_Pink"
+            android:textColor="@color/CommonColor_White"
+            android:text="@string/search_main"
+            android:textSize="@dimen/text_size_medium"
+            android:button="@null"
+            app:showAsAction="always"/>
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+</LinearLayout>
