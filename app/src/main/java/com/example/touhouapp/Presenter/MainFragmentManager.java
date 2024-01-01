@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.example.touhouapp.Base.TouHouApplication;
 import com.example.touhouapp.Bean.MainDisplay;
 import com.example.touhouapp.Model.Services.MainFragmentService;
 
@@ -27,7 +28,7 @@ public class MainFragmentManager {
     }
 
     public static synchronized MainFragmentManager getInstance(Context context){
-        Log.d(TAG,"getInstance, instance = " + instance);
+        TouHouApplication.d(TAG,"getInstance, instance = " + instance);
         if(instance == null){
             instance = new MainFragmentManager(context);
         }
@@ -35,7 +36,7 @@ public class MainFragmentManager {
     }
 
     public void startMainFragmentService(){
-        Log.d(TAG,"MainFragment bind Service..., context = " + context);
+        TouHouApplication.d(TAG,"MainFragment bind Service..., context = " + context);
         if(context != null && mMainFragmentService == null){
             if(mMainFragmentServiceConnection == null){
                 initMainFragmentServiceConnection();
@@ -57,7 +58,7 @@ public class MainFragmentManager {
 
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
-                Log.d(TAG,"unexpected disconnected");
+                TouHouApplication.d(TAG,"unexpected disconnected");
                 mMainFragmentService = null;
             }
         };

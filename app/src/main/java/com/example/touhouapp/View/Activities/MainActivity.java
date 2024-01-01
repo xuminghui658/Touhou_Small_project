@@ -20,6 +20,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.touhouapp.Base.BaseActivity;
+import com.example.touhouapp.Base.TouHouApplication;
 import com.example.touhouapp.Presenter.MainActivityManager;
 import com.example.touhouapp.R;
 import com.example.touhouapp.View.Adapters.BusFragmentAdapter;
@@ -44,7 +45,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     /**
      * ViewPager2
      */
-    private ViewPager2 mViewPager2;
+    private ViewPager2 mainPageSelection;
 
     /**
      * actionBar/ToolBar
@@ -66,7 +67,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG,"onCreate");
+        TouHouApplication.d(TAG,"onCreate");
         setContentView(R.layout.activity_main);
         initView();
         initPresenter();
@@ -76,7 +77,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
      * layout component related
      */
     private void initView(){
-        mViewPager2 = findViewById(R.id.ViewPager_main);
+        mainPageSelection = findViewById(R.id.ViewPager_main);
         mainBtn = findViewById(R.id.main_tab);
         mainBtn.setOnClickListener(this);
         newsBtn = findViewById(R.id.news_tab);
@@ -87,10 +88,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         homeBtn.setOnClickListener(this);
 //        mIconImage.setOnClickListener(this);
         mBusFragmentAdapter = BusFragmentAdapter.getInstance(getApplicationContext(),getSupportFragmentManager(),getLifecycle());
-        mViewPager2.setAdapter(mBusFragmentAdapter);
+        mainPageSelection.setAdapter(mBusFragmentAdapter);
         //forbid slide
-        mViewPager2.setUserInputEnabled(false);
-        mViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        mainPageSelection.setUserInputEnabled(false);
+        mainPageSelection.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
@@ -99,15 +100,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+                TouHouApplication.d(TAG,"PageSelected, position = " + position);
                 switch (position){
                     case TAB_MAIN:
                         mainBtn.setChecked(true);
+                        break;
                     case TAB_NEWS:
                         newsBtn.setChecked(true);
+                        break;
                     case TAB_SHOP:
                         shopBtn.setChecked(true);
+                        break;
                     case TAB_HOME:
                         homeBtn.setChecked(true);
+                        break;
                 }
             }
 
@@ -116,21 +122,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 super.onPageScrollStateChanged(state);
             }
         });
-        //search view
         toolbar = findViewById(R.id.layout_toolbar);
+        setSupportActionBar(toolbar);
+        navigationView = findViewById(R.id.navView_main);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "open navigation View");
+                TouHouApplication.d(TAG, "open navigation View");
                 drawerLayout = findViewById(R.id.drawerLayout);
-                navigationView = findViewById(R.id.navView_main);
                 mIconImage = findViewById(R.id.circle_icon_image);
+                mIconImage.setImageResource(R.drawable.login_morisa);
                 drawerLayout.openDrawer(GravityCompat.START);
                 navigationView.setCheckedItem(R.id.navCall);
             }
         });
         searchView = findViewById(R.id.search_toolbar);
-        setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
         }
@@ -183,8 +189,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.main_tab:
+                mainPageSelection.setCurrentItem(TAB_MAIN,false);
+                break;
+            case R.id.news_tab:
+                mainPageSelection.setCurrentItem(TAB_NEWS,false);
+                break;
+            case R.id.shop_tab:
+                mainPageSelection.setCurrentItem(TAB_SHOP,false);
+                break;
+            case R.id.home_tab:
+                mainPageSelection.setCurrentItem(TAB_HOME,false);
+                break;
             case R.id.layout_toolbar: {
-                Log.d(TAG, "open navigation View");
+                TouHouApplication.d(TAG, "open navigation View");
                 navigationView = findViewById(R.id.navView_main);
                 mIconImage = findViewById(R.id.circle_icon_image);
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -200,12 +218,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG,"onResume");
+        TouHouApplication.d(TAG,"onResume");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG,"onDestroy");
+        TouHouApplication.d(TAG,"onDestroy");
     }
 }

@@ -14,6 +14,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.example.touhouapp.Base.TouHouApplication;
 import com.example.touhouapp.Bean.MainDisplay;
 import com.example.touhouapp.Model.Interfaces.VideoData;
 import com.example.touhouapp.R;
@@ -30,13 +31,13 @@ public class MainFragmentService extends Service {
     private List<MainDisplay> VideoList= new ArrayList<>();
     @Override
     public void onCreate() {
-        Log.d(TAG,"onCreate");
+        TouHouApplication.d(TAG,"onCreate");
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG,"onStartCommand");
+        TouHouApplication.d(TAG,"onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -71,7 +72,7 @@ public class MainFragmentService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG,"onDestroy");
+        TouHouApplication.d(TAG,"onDestroy");
         super.onDestroy();
     }
 

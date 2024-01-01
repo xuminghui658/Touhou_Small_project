@@ -1,15 +1,18 @@
 package com.example.touhouapp.View.Activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.touhouapp.Base.BaseActivity;
+import com.example.touhouapp.Base.TouHouApplication;
 import com.example.touhouapp.R;
 
 public class SearchActivity extends BaseActivity implements View.OnClickListener{
@@ -37,6 +40,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 //這裡原逻辑是有输入文字，先清空，没有才退出，改为直接退出
+                onBackPressed();
                 finish();
             }
         });
@@ -55,8 +59,17 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        InputMethodManager inputManager = (InputMethodManager) TouHouApplication.MyContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(inputManager != null){
+            inputManager.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
+        }
+    }
+
+    @Override
     public void onClick(View view) {
-        Log.d(TAG,"now click item = " + view.getId());
+        TouHouApplication.d(TAG,"now click item = " + view.getId());
         int itemId = view.getId();
 
     }

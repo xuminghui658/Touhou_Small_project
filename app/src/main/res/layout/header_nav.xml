@@ -10,9 +10,12 @@
         android:id="@+id/circle_icon_image"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_margin="10dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp" />
 
     <TextView
         android:textSize="@dimen/text_size_medium"

@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.touhouapp.Base.TouHouApplication;
 import com.example.touhouapp.Constants.Constants4Main;
 import com.example.touhouapp.View.Activities.MainActivity;
 import com.example.touhouapp.View.Fragments.HomeFragment;
@@ -39,7 +40,7 @@ public class BusFragmentAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        Log.d(TAG,"current click position: " + position);
+        TouHouApplication.d(TAG,"current click position: " + position);
         switch (position){
             case MainActivity.TAB_MAIN:
                 return new MainFragment();

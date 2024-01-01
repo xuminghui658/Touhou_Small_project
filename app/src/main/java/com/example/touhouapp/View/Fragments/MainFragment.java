@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.touhouapp.Base.TouHouApplication;
 import com.example.touhouapp.Bean.MainDisplay;
 import com.example.touhouapp.Model.Interfaces.VideoData;
 import com.example.touhouapp.Model.Services.MainFragmentService;
@@ -35,7 +36,7 @@ public class MainFragment extends Fragment implements VideoData {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d(TAG,"onCreate");
+        TouHouApplication.d(TAG,"onCreate");
         super.onCreate(savedInstanceState);
         bindService();
     }
@@ -59,7 +60,7 @@ public class MainFragment extends Fragment implements VideoData {
     }
 
     private void addVideoTag(){
-        Log.d(TAG,"mDisplayList = " + mDisplayList);
+        TouHouApplication.d(TAG,"mDisplayList = " + mDisplayList);
         if(mDisplayList != null){
             mMainAdapter = new MainRecycleAdapter(mDisplayList);
             mMainRecycle.setAdapter(mMainAdapter);
@@ -76,14 +77,14 @@ public class MainFragment extends Fragment implements VideoData {
 
     @Override
     public void setVideoData(List<MainDisplay> list) {
-        Log.d(TAG,"loading video over");
+        TouHouApplication.d(TAG,"loading video over");
         mDisplayList = list;
         addVideoTag();
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TAG,"onDestroy");
+        TouHouApplication.d(TAG,"onDestroy");
         super.onDestroy();
         unbindService();
     }

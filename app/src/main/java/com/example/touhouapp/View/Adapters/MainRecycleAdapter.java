@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.touhouapp.Base.TouHouApplication;
 import com.example.touhouapp.Bean.MainDisplay;
 import com.example.touhouapp.R;
 import com.example.touhouapp.View.Activities.DetailsPageActivity;
@@ -34,13 +35,13 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
     }
 
     public MainRecycleAdapter(List<MainDisplay> list){
-        Log.d(TAG,"init HomeRecycleAdapter");
+        TouHouApplication.d(TAG,"init HomeRecycleAdapter");
         mMainDisplayList = list;
     }
     @NonNull
     @Override
     public MainRecycleAdapter.HomeViewHolder onCreateViewHolder(@NonNull ViewGroup group, int position) {
-        Log.d(TAG,"onCreateViewHolder, position = " + position);
+        TouHouApplication.d(TAG,"onCreateViewHolder, position = " + position);
         View view = LayoutInflater.from(group.getContext()).inflate(R.layout.fragment_main_adapter, group, false);
         HomeViewHolder viewHolder = new HomeViewHolder(view);
         //对应位置的点击事件
@@ -62,7 +63,7 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MainRecycleAdapter.HomeViewHolder holder, int position) {
-        Log.d(TAG,"onBindViewHolder, position = " + position);
+        TouHouApplication.d(TAG,"onBindViewHolder, position = " + position);
         MainDisplay mainDisplay = mMainDisplayList.get(position);
         holder.imageView.setImageResource(mainDisplay.ImageId);
         holder.textView.setText(mainDisplay.ImageText);

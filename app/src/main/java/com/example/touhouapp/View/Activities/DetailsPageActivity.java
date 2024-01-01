@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.touhouapp.Base.TouHouApplication;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import com.example.touhouapp.R;
@@ -29,7 +30,7 @@ public class DetailsPageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG,"intent = " + getIntent().getComponent().getClassName() + "----action = " + getIntent().getAction() + "----type = " + getIntent().getType()
+        TouHouApplication.d(TAG,"intent = " + getIntent().getComponent().getClassName() + "----action = " + getIntent().getAction() + "----type = " + getIntent().getType()
                 + "---getPackage = " + getIntent().getPackage() + "---getData = " + getIntent().getData());
         initView();
         initToolBarView(toolbar);

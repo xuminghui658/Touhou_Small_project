@@ -18,16 +18,16 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String activityName = getClass().getSimpleName();
-        Log.d(TAG,"current is creating activity: " + activityName + ", current created activities: " + activityStacks);
+        TouHouApplication.d(TAG,"current is creating activity: " + activityName + ", current created activities: " + activityStacks);
         activityStacks.add(activityName);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG,"onDestroy");
+        TouHouApplication.d(TAG,"onDestroy");
         String activityName = getClass().getSimpleName();
-        Log.d(TAG, "onDestroy, removeActivity: " + activityName + ", current created activities: " + activityStacks);
+        TouHouApplication.d(TAG, "onDestroy, removeActivity: " + activityName + ", current created activities: " + activityStacks);
         activityStacks.remove(activityName);
     }
 }
