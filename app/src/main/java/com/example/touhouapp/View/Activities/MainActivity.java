@@ -1,8 +1,14 @@
 package com.example.touhouapp.View.Activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
@@ -21,14 +28,20 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.touhouapp.Base.BaseActivity;
 import com.example.touhouapp.Base.TouHouApplication;
+import com.example.touhouapp.Constants.Constants4Main;
 import com.example.touhouapp.Presenter.MainActivityManager;
 import com.example.touhouapp.R;
+import com.example.touhouapp.Utils.PermissionUtil;
+import com.example.touhouapp.Utils.PreferenceUtil;
 import com.example.touhouapp.View.Adapters.BusFragmentAdapter;
+import com.example.touhouapp.View.Fragments.HeadImageFragment;
 import com.google.android.material.navigation.NavigationView;
+
+import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener, HeadImageFragment.OnHeadImageChangedListener {
     private static String TAG = "MainActivity";
     /**
      *different fragment
@@ -71,6 +84,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
         initView();
         initPresenter();
+        checkPermissions();
+        createNeededFile();
     }
 
     /**
@@ -129,11 +144,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 TouHouApplication.d(TAG, "open navigation View");
-                drawerLayout = findViewById(R.id.drawerLayout);
-                mIconImage = findViewById(R.id.circle_icon_image);
-                mIconImage.setImageResource(R.drawable.login_morisa);
+                drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+                mIconImage = (CircleImageView) findViewById(R.id.circle_icon_image);
                 drawerLayout.openDrawer(GravityCompat.START);
                 navigationView.setCheckedItem(R.id.navCall);
+                mIconImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        TouHouApplication.d(TAG,"create HeadImageFragment");
+                        if(headChangeFragment == null){
+                            headChangeFragment = new HeadImageFragment();
+                        }
+                        headChangeFragment.show(getSupportFragmentManager(), "headImageChangedFragment");
+                    }
+                });
+                changePersonalImage();
             }
         });
         searchView = findViewById(R.id.search_toolbar);
@@ -156,11 +181,42 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         });
     }
 
+    private void changePersonalImage(){
+        if(PreferenceUtil.getCroppedBitmap(MainActivity.this) != null){
+            mIconImage.setImageBitmap(PreferenceUtil.getCroppedBitmap(MainActivity.this));
+        }else {
+            mIconImage.setImageResource(R.drawable.morisa_circle);
+        }
+    }
+
+    private void checkPermissions(){
+        if(!PermissionUtil.hasPermissions(this , new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.INTERNET,Manifest.permission.MANAGE_EXTERNAL_STORAGE})){
+            PermissionUtil.checkPermissions(null,this,PermissionUtil.REQUEST_CODE_ALL,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.INTERNET,Manifest.permission.MANAGE_EXTERNAL_STORAGE});
+        }
+    }
+
+    private void createNeededFile(){
+        TouHouApplication.d(TAG,"create Relative FileDirs");
+        String manufacturer = Build.MANUFACTURER;
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) && manufacturer.equals("Xiaomi")) {
+            File fileDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Pictures", "TouhouApp/.Picture");
+            if (!fileDir.exists()) {
+                if(!fileDir.mkdirs()){
+                    TouHouApplication.e(TAG,"create Relative FileDirs failed");
+                }
+            }
+        }else{
+            TouHouApplication.e(TAG,"ExternalStorageDirectory can not be write");
+        }
+    }
+
     /**
      * Presenter related
      */
     private void initPresenter(){
-
+        mMainActivityManager = MainActivityManager.getInstance(this);
     }
 
     /**
@@ -201,20 +257,52 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.home_tab:
                 mainPageSelection.setCurrentItem(TAB_HOME,false);
                 break;
-            case R.id.layout_toolbar: {
-                TouHouApplication.d(TAG, "open navigation View");
-                navigationView = findViewById(R.id.navView_main);
-                mIconImage = findViewById(R.id.circle_icon_image);
-                drawerLayout.openDrawer(GravityCompat.START);
-                navigationView.setCheckedItem(R.id.navCall);
-                break;
-            }
             case R.id.circle_icon_image:
                 //更换头像的逻辑
+                TouHouApplication.d(TAG,"create HeadImageFragment");
+                if(headChangeFragment == null){
+                    headChangeFragment = new HeadImageFragment();
+                }
+                headChangeFragment.show(getSupportFragmentManager(), "headImageChangedFragment");
+                break;
             default:
                 break;
         }
     }
+
+    @Override
+    protected void onActivityResult(int RequestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(RequestCode, resultCode, data);
+        if(RequestCode == Constants4Main.CAMERA_SAVE_REQUEST_CODE && resultCode == RESULT_OK){
+            //到这里拍摄图片已经保存，然后进行截图,截完图的Bitmap通过下面的请求返回
+            String imagePath = PreferenceUtil.getSavedImage(this);
+            TouHouApplication.d(TAG,"Image Path = " + imagePath);
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            PreferenceUtil.setCroppedBitmap(TouHouApplication.MyContext, bitmap);
+            mIconImage.setImageBitmap(bitmap);
+//            MainActivityManager.cropAndSetHeadBitmap(this,imagePath,null);
+        }
+//        if(RequestCode == Constants4Main.CAMERA_CROP_REQUEST_CODE && resultCode == RESULT_OK) {
+//            Bitmap result;
+//            String cropResult = data.getStringExtra(CropActivity.CROP_FINISHED);
+//            if(cropResult.equals("success")){
+//                //这里返回经过截图的拍照/相册图片
+//                TouHouApplication.d(TAG,"set new headIcon");
+//                result = PreferenceUtil.getCroppedBitmap(this);
+//                mIconImage.setImageBitmap(result);
+//            }else{
+//                TouHouApplication.d(TAG,"bitmap transport failed");
+//            }
+//        }
+        if(RequestCode == Constants4Main.ALBUM_SAVE_REQUEST_CODE && resultCode == RESULT_OK){
+            if(data != null){
+                Uri imageUri = data.getData();
+                TouHouApplication.d(TAG,"album selected image = " + imageUri.toString());
+                mIconImage.setImageURI(imageUri);
+            }
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -225,5 +313,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     protected void onDestroy() {
         super.onDestroy();
         TouHouApplication.d(TAG,"onDestroy");
+        if(mMainActivityManager != null){
+            mMainActivityManager.doDestroy();
+        }
+    }
+
+    @Override
+    public void onCameraSelected(HeadImageFragment m) {
+        if(headChangeFragment != null){
+            headChangeFragment.dismiss();
+        }
+        if(mMainActivityManager != null){
+            mMainActivityManager.startCamera();
+        }
+    }
+
+    @Override
+    public void onAlbumSelected(HeadImageFragment m) {
+        if(headChangeFragment != null){
+            headChangeFragment.dismiss();
+        }
+        if(mMainActivityManager != null){
+            mMainActivityManager.startAlbum();
+        }
     }
 }

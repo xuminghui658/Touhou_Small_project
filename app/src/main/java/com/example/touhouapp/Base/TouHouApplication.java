@@ -27,27 +27,27 @@ public class TouHouApplication extends Application {
     //日志等级划分、输出控制
     public static void v(String TAG, String message){
         if(LOG_LEVEL >= LOG_VERBOSE){
-            Log.v(TAG, message);
+            TouHouApplication.v(TAG, message);
         }
     }
     public static void d(String TAG, String message){
         if(LOG_LEVEL >= LOG_DEBUG){
-            Log.d(TAG, message);
+            TouHouApplication.d(TAG, message);
         }
     }
     public static void i(String TAG, String message){
         if(LOG_LEVEL >= LOG_INFO){
-            Log.i(TAG, message);
+            TouHouApplication.i(TAG, message);
         }
     }
     public static void w(String TAG, String message){
         if(LOG_LEVEL >= LOG_WARN){
-            Log.w(TAG, message);
+            TouHouApplication.w(TAG, message);
         }
     }
     public static void e(String TAG, String message){
         if(LOG_LEVEL >= LOG_ERROR){
-            Log.e(TAG, message);
+            TouHouApplication.e(TAG, message);
         }
     }
 

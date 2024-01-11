@@ -12,11 +12,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.example.touhouapp.Base.TouHouApplication;
 import com.example.touhouapp.Bean.MainDisplay;
-import com.example.touhouapp.Model.Interfaces.VideoData;
+import com.example.touhouapp.Model.Dao.VideoData;
 import com.example.touhouapp.R;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.touhouapp.Model.Interfaces;
+package com.example.touhouapp.Model.Dao;
 
 import com.example.touhouapp.Bean.MainDisplay;
 

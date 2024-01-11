@@ -1,7 +1,6 @@
 package com.example.touhouapp.View.Fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +15,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.touhouapp.Base.TouHouApplication;
 import com.example.touhouapp.Bean.MainDisplay;
-import com.example.touhouapp.Model.Interfaces.VideoData;
+import com.example.touhouapp.Model.Dao.VideoData;
 import com.example.touhouapp.Model.Services.MainFragmentService;
 import com.example.touhouapp.Presenter.MainFragmentManager;
 import com.example.touhouapp.R;
 import com.example.touhouapp.View.Adapters.MainRecycleAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainFragment extends Fragment implements VideoData {

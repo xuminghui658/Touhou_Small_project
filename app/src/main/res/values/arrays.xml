@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="change_head_image_list">
+        <item>拍照</item>
+        <item>相册</item>
+    </string-array>
+    <string-array name="paint_color">
+        <item>黑色</item>
+        <item>红色</item>
+        <item>绿色</item>
+        <item>蓝色</item>
+    </string-array>
+    <string-array name="paint_width">
+        <item>黑色</item>
+        <item>红色</item>
+        <item>绿色</item>
+    </string-array>
+</resources>

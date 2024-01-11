@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/mainView_viewPager_margin_bottom">
+
+    <LinearLayout
+        android:id="@+id/paint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mine_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/home_page"
+            android:textAlignment="center"
+            android:textSize="25sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/paint_color"
+                android:entries="@array/paint_color"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@drawable/text_selector"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/paint_width"
+                android:entries="@array/paint_width"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@drawable/text_selector"/>
+
+            <RadioGroup
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:background="@color/CommonColor_White">
+                <RadioButton
+                    android:id="@+id/paint_clear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/paint_clear"
+                    android:textAlignment="center"
+                    android:button="@null"
+                    android:textColor="@drawable/text_selector"/>
+
+                <RadioButton
+                    android:id="@+id/canvas_save"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/canvas_save"
+                    android:textAlignment="center"
+                    android:button="@null"
+                    android:textColor="@drawable/text_selector"/>
+            </RadioGroup>
+        </LinearLayout>
+        <com.example.touhouapp.View.SelfView.PaintScale
+            android:id="@+id/paintScale1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/drawView_height" />
+    </LinearLayout>
+    <ListView
+        android:id="@+id/personal_message_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/paint_layout">
+
+    </ListView>
+</RelativeLayout>
