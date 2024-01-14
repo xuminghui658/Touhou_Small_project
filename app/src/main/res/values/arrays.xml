@@ -11,8 +11,8 @@
         <item>蓝色</item>
     </string-array>
     <string-array name="paint_width">
-        <item>黑色</item>
-        <item>红色</item>
-        <item>绿色</item>
+        <item>细线</item>
+        <item>中线</item>
+        <item>粗线</item>
     </string-array>
 </resources>

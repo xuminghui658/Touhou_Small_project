@@ -17,6 +17,7 @@ import com.example.touhouapp.Model.Services.MainActivityService;
 import com.example.touhouapp.Utils.CameraUtil;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -49,43 +50,6 @@ public class MainActivityManager {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
         mActivity.startActivityForResult(intent, Constants4Main.ALBUM_SAVE_REQUEST_CODE);
-    }
-
-    public void saveBitmap(Context context, String fileName, Bitmap bitmap){
-        String fileDirName = Environment.getExternalStorageDirectory() + File.separator + "Pictures"+ File.separator + "TouhouApp/.Picture";
-        //保存系统相册的方法
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.MediaColumns.TITLE,fileName);
-        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME,fileName);
-        contentValues.put(MediaStore.MediaColumns.MIME_TYPE,"image/png");
-        contentValues.put(MediaStore.MediaColumns.DATE_TAKEN,fileName);
-        //文件保存路径
-        contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH,fileDirName);
-        Uri uri = null;
-        OutputStream fileOS = null;
-        ContentResolver localContentResolver = context.getContentResolver();
-        try {
-            uri = localContentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-            fileOS = localContentResolver.openOutputStream(uri);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOS);
-            TouHouApplication.d(TAG,"Image save success");
-            fileOS.flush();
-            fileOS.close();
-        }catch (IOException e){
-            TouHouApplication.e(TAG,"create SaveFile failed");
-            if(uri != null){
-                localContentResolver.delete(uri,null,null);
-            }
-        }finally {
-//            bitmap.recycle();
-            if(fileOS != null) {
-                try {
-                    fileOS.close();
-                }catch (IOException e){
-                    e.getStackTrace();
-                }
-            }
-        }
     }
 
     private void startService(Intent intent, String action){

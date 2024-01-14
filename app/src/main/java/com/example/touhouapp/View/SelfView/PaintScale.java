@@ -10,6 +10,7 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Build;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -22,7 +23,10 @@ import com.example.touhouapp.Base.TouHouApplication;
 import com.example.touhouapp.Presenter.MainActivityManager;
 import com.example.touhouapp.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class PaintScale extends View {
     public static String TAG = "paintScale";
@@ -35,18 +39,14 @@ public class PaintScale extends View {
     private Bitmap cacheBitmap;
     public Canvas cacheCanvas;
 
-    private MainActivityManager mMainManager;
-
     public PaintScale(Context context) {
         super(context);
         initCanvas(context);
-        mMainManager = MainActivityManager.getInstance((Activity) context);
     }
 
     public PaintScale(Context context, @Nullable AttributeSet attrs){
         super(context,attrs);
         initCanvas(context);
-        mMainManager = MainActivityManager.getInstance((Activity) context);
     }
 
     private void initCanvas(Context context) {
@@ -71,7 +71,6 @@ public class PaintScale extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        TouHouApplication.d(TAG,"Paint onDrawing");
         canvas.drawColor(getResources().getColor(R.color.ThemeColor_Gray));
         Paint bitPaint = new Paint();
         //画板背景
@@ -114,13 +113,37 @@ public class PaintScale extends View {
 
     //橡皮擦
     public void clear(){
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        paint.setStrokeWidth(50);
+        cacheCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
     }
 
     //保存
     public void save(String fileName) throws IOException {
-        mMainManager.saveBitmap(getContext(),fileName,cacheBitmap);
+        String fileDirName = Environment.getExternalStorageDirectory() + File.separator + "Pictures"+ File.separator + "TouhouApp/.Picture";
+        //保存系统相册的方法
+        OutputStream fileOS = null;
+        File saveFile = new File(fileDirName,fileName);
+        try {
+            if(!saveFile.exists()){
+                if(!saveFile.createNewFile()){
+                    TouHouApplication.d(TAG,"saveFile.createNewFile failed");
+                }
+            }
+            fileOS = new FileOutputStream(saveFile);
+            cacheBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOS);
+            TouHouApplication.d(TAG,"Image save success");
+            fileOS.flush();
+            fileOS.close();
+        }catch (IOException e){
+            TouHouApplication.e(TAG,"create SaveFile failed :" + e);
+        }finally {
+            if(fileOS != null) {
+                try {
+                    fileOS.close();
+                }catch (IOException e){
+                    e.getStackTrace();
+                }
+            }
+        }
     }
 
     public void setColor(String str){

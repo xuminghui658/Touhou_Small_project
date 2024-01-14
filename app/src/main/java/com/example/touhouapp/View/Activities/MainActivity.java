@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
@@ -34,14 +32,15 @@ import com.example.touhouapp.R;
 import com.example.touhouapp.Utils.PermissionUtil;
 import com.example.touhouapp.Utils.PreferenceUtil;
 import com.example.touhouapp.View.Adapters.BusFragmentAdapter;
-import com.example.touhouapp.View.Fragments.HeadImageFragment;
+import com.example.touhouapp.View.Fragments.HeadImageDialog;
+import com.example.touhouapp.View.Fragments.PaintScaleDialog;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, HeadImageFragment.OnHeadImageChangedListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, HeadImageDialog.OnHeadImageChangedListener, PaintScaleDialog.OnSaveClickListener {
     private static String TAG = "MainActivity";
     /**
      *different fragment
@@ -75,7 +74,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * dialog
      */
-    DialogFragment headChangeFragment;
+    DialogFragment headChangeDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,15 +118,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 switch (position){
                     case TAB_MAIN:
                         mainBtn.setChecked(true);
+                        searchView.setVisibility(View.VISIBLE);
                         break;
                     case TAB_NEWS:
                         newsBtn.setChecked(true);
+                        searchView.setVisibility(View.VISIBLE);
                         break;
                     case TAB_SHOP:
                         shopBtn.setChecked(true);
+                        searchView.setVisibility(View.VISIBLE);
                         break;
                     case TAB_HOME:
                         homeBtn.setChecked(true);
+                        searchView.setVisibility(View.INVISIBLE);
                         break;
                 }
             }
@@ -152,10 +155,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     @Override
                     public void onClick(View view) {
                         TouHouApplication.d(TAG,"create HeadImageFragment");
-                        if(headChangeFragment == null){
-                            headChangeFragment = new HeadImageFragment();
+                        if(headChangeDialog == null){
+                            headChangeDialog = new HeadImageDialog();
                         }
-                        headChangeFragment.show(getSupportFragmentManager(), "headImageChangedFragment");
+                        headChangeDialog.show(getSupportFragmentManager(), "headImageChangedDialog");
                     }
                 });
                 changePersonalImage();
@@ -260,10 +263,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.circle_icon_image:
                 //更换头像的逻辑
                 TouHouApplication.d(TAG,"create HeadImageFragment");
-                if(headChangeFragment == null){
-                    headChangeFragment = new HeadImageFragment();
+                if(headChangeDialog == null){
+                    headChangeDialog = new HeadImageDialog();
                 }
-                headChangeFragment.show(getSupportFragmentManager(), "headImageChangedFragment");
+                headChangeDialog.show(getSupportFragmentManager(), "headImageChangedFragment");
                 break;
             default:
                 break;
@@ -280,20 +283,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             PreferenceUtil.setCroppedBitmap(TouHouApplication.MyContext, bitmap);
             mIconImage.setImageBitmap(bitmap);
-//            MainActivityManager.cropAndSetHeadBitmap(this,imagePath,null);
         }
-//        if(RequestCode == Constants4Main.CAMERA_CROP_REQUEST_CODE && resultCode == RESULT_OK) {
-//            Bitmap result;
-//            String cropResult = data.getStringExtra(CropActivity.CROP_FINISHED);
-//            if(cropResult.equals("success")){
-//                //这里返回经过截图的拍照/相册图片
-//                TouHouApplication.d(TAG,"set new headIcon");
-//                result = PreferenceUtil.getCroppedBitmap(this);
-//                mIconImage.setImageBitmap(result);
-//            }else{
-//                TouHouApplication.d(TAG,"bitmap transport failed");
-//            }
-//        }
         if(RequestCode == Constants4Main.ALBUM_SAVE_REQUEST_CODE && resultCode == RESULT_OK){
             if(data != null){
                 Uri imageUri = data.getData();
@@ -319,9 +309,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void onCameraSelected(HeadImageFragment m) {
-        if(headChangeFragment != null){
-            headChangeFragment.dismiss();
+    public void onCameraSelected(HeadImageDialog m) {
+        if(headChangeDialog != null){
+            headChangeDialog.dismiss();
         }
         if(mMainActivityManager != null){
             mMainActivityManager.startCamera();
@@ -329,12 +319,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void onAlbumSelected(HeadImageFragment m) {
-        if(headChangeFragment != null){
-            headChangeFragment.dismiss();
+    public void onAlbumSelected(HeadImageDialog m) {
+        if(headChangeDialog != null){
+            headChangeDialog.dismiss();
         }
         if(mMainActivityManager != null){
             mMainActivityManager.startAlbum();
+        }
+    }
+
+    @Override
+    public void onSaved(PaintScaleDialog p) {
+        if(p != null){
+            p.dismiss();
         }
     }
 }

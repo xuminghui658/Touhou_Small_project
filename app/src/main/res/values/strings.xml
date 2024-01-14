@@ -24,6 +24,8 @@
     <string name="open_msg">打开消息</string>
 
     <string name="change_head_image">更换头像</string>
+    <string name="paint_color">颜色</string>
+    <string name="paint_width">粗细</string>
     <string name="paint_clear">清空</string>
     <string name="canvas_save">保存</string>
 </resources>

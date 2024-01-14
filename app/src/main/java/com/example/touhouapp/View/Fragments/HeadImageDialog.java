@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -13,7 +12,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.touhouapp.Base.TouHouApplication;
 import com.example.touhouapp.R;
 
-public class HeadImageFragment extends DialogFragment {
+public class HeadImageDialog extends DialogFragment {
     public static final String TAG = "HeadImageFragment";
     public OnHeadImageChangedListener mListener;
 
@@ -37,10 +36,10 @@ public class HeadImageFragment extends DialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case 0:
-                        mListener.onCameraSelected(HeadImageFragment.this);
+                        mListener.onCameraSelected(HeadImageDialog.this);
                         break;
                     case 1:
-                        mListener.onAlbumSelected(HeadImageFragment.this);
+                        mListener.onAlbumSelected(HeadImageDialog.this);
                         break;
                 }
             }
@@ -49,7 +48,7 @@ public class HeadImageFragment extends DialogFragment {
     }
 
     public interface OnHeadImageChangedListener{
-        void onCameraSelected(HeadImageFragment m);
-        void onAlbumSelected(HeadImageFragment m);
+        void onCameraSelected(HeadImageDialog m);
+        void onAlbumSelected(HeadImageDialog m);
     }
 }
